@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'pages/login_page.dart';
+import 'pages/signup_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +19,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         textTheme: GoogleFonts.notoSansTextTheme(),
       ),
-      home: const HomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomePage(),
+        '/login': (context) => const LoginPage(),
+        '/signup': (context) => const SignupPage(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }
@@ -58,8 +65,10 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                             IconButton(
-                              icon: const Icon(Icons.search),
-                              onPressed: () {},
+                              icon: const Icon(Icons.person),
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/login');
+                              },
                             ),
                           ],
                         ),
