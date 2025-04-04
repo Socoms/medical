@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -6,234 +12,264 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Medical App',
-      debugShowCheckedModeBanner: false,
-      home: NearbyHospitalsPage(),
+      title: 'Nearby Hospitals',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-        useMaterial3: true,
+        textTheme: GoogleFonts.notoSansTextTheme(),
       ),
+      home: const HomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
-void main() {
-  runApp(const MyApp());
-}
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
-class NearbyHospitalsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isMobile = screenWidth < 600;
-
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            // 상단 앱바
+            // App Bar
             Padding(
-              padding: EdgeInsets.all(isMobile ? 12 : 16),
+              padding: const EdgeInsets.all(16.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.menu, size: isMobile ? 24 : 28),
-                  SizedBox(width: isMobile ? 12 : 16),
-                  Text(
+                  IconButton(
+                    icon: const Icon(Icons.menu),
+                    onPressed: () {},
+                  ),
+                  const Text(
                     'Nearby Hospitals',
                     style: TextStyle(
-                      fontSize: isMobile ? 20 : 24,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Spacer(),
-                  Icon(Icons.search, size: isMobile ? 24 : 28),
+                  IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ),
+            
+            // Banner Image
+            Container(
+              height: 200,
+              width: double.infinity,
+              color: const Color(0xFFE8F5E9),
+              child: Stack(
+                children: [
+                  const Positioned(
+                    left: 20,
+                    bottom: 40,
+                    child: Text(
+                      'Find the nearest\nhospital now!',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    right: 20,
+                    bottom: 20,
+                    child: Image.asset(
+                      'assets/images/hospital_illustration.png',
+                      height: 120,
+                    ),
+                  ),
                 ],
               ),
             ),
 
-            // 배너
-            Container(
-              height: isMobile ? 150 : 200,
-              width: double.infinity,
-              color: Colors.blue,
-              child: Padding(
-                padding: EdgeInsets.all(isMobile ? 16 : 20),
-                child: Text(
-                  'Find the nearest\nhospital now!',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: isMobile ? 24 : 32,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-
-            // 메인 버튼들
+            // Quick Actions
             Padding(
-              padding: EdgeInsets.all(isMobile ? 12 : 16),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  _buildButton('Hospital Search', true, isMobile),
-                  SizedBox(height: isMobile ? 8 : 12),
-                  _buildButton('Online Consultation', false, isMobile),
-                  SizedBox(height: isMobile ? 8 : 12),
-                  _buildButton('Pharmacy Finder', true, isMobile),
-                  SizedBox(height: isMobile ? 8 : 12),
-                  _buildButton('Emergency Guide', false, isMobile),
+                  _buildActionButton(
+                    'Hospital Search',
+                    backgroundColor: Colors.black,
+                    textColor: Colors.white,
+                  ),
+                  const SizedBox(height: 12),
+                  _buildActionButton(
+                    'Online Consultation',
+                    backgroundColor: Colors.grey[200]!,
+                    textColor: Colors.black,
+                  ),
+                  const SizedBox(height: 12),
+                  _buildActionButton(
+                    'Pharmacy Finder',
+                    backgroundColor: Colors.black,
+                    textColor: Colors.white,
+                  ),
+                  const SizedBox(height: 12),
+                  _buildActionButton(
+                    'Emergency Guide',
+                    backgroundColor: Colors.grey[200]!,
+                    textColor: Colors.black,
+                  ),
                 ],
               ),
             ),
 
-            // 필터 버튼들
+            // Category Filter
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.symmetric(horizontal: isMobile ? 12 : 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
-                  _buildFilterChip('All', isMobile),
-                  SizedBox(width: isMobile ? 6 : 8),
-                  _buildFilterChip('Internal Medicine', isMobile),
-                  SizedBox(width: isMobile ? 6 : 8),
-                  _buildFilterChip('Surgery', isMobile),
+                  _buildFilterChip('All'),
+                  const SizedBox(width: 8),
+                  _buildFilterChip('Internal Medicine'),
+                  const SizedBox(width: 8),
+                  _buildFilterChip('Surgery'),
                 ],
               ),
             ),
 
-            // 병원 리스트
+            // Hospital List
             Expanded(
               child: ListView(
-                padding: EdgeInsets.all(isMobile ? 12 : 16),
+                padding: const EdgeInsets.all(16),
                 children: [
                   _buildHospitalCard(
                     'City Hospital',
                     'Open 24/7, 2 miles away',
-                    isMobile,
+                    'assets/images/hospital1.jpg',
                   ),
-                  SizedBox(height: isMobile ? 8 : 12),
+                  const SizedBox(height: 12),
                   _buildHospitalCard(
                     'Sunrise Clinic',
                     'Open until 8 PM, 1.5 miles away',
-                    isMobile,
+                    'assets/images/hospital2.jpg',
                   ),
                 ],
               ),
             ),
-
-            // 하단 네비게이션 바
-            BottomNavigationBar(
-              currentIndex: 0,
-              type: BottomNavigationBarType.fixed,
-              items: [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home, size: isMobile ? 20 : 24),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite, size: isMobile ? 20 : 24),
-                  label: 'Health',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.calendar_today, size: isMobile ? 20 : 24),
-                  label: 'Appointments',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.menu, size: isMobile ? 20 : 24),
-                  label: 'More',
-                ),
-              ],
-            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildButton(String text, bool isDark, bool isMobile) {
-    return Container(
-      width: double.infinity,
-      height: isMobile ? 45 : 50,
-      child: ElevatedButton(
-        onPressed: () {},
-        child: Text(
-          text,
-          style: TextStyle(fontSize: isMobile ? 14 : 16),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isDark ? Colors.black : Colors.grey[200],
-          foregroundColor: isDark ? Colors.white : Colors.black,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(isMobile ? 20 : 25),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFilterChip(String label, bool isMobile) {
-    return Chip(
-      label: Text(
-        label,
-        style: TextStyle(fontSize: isMobile ? 12 : 14),
-      ),
-      backgroundColor: Colors.grey[200],
-    );
-  }
-
-  Widget _buildHospitalCard(String name, String info, bool isMobile) {
-    return Container(
-      padding: EdgeInsets.all(isMobile ? 10 : 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(isMobile ? 10 : 12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_border),
+            label: 'Health',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: 'Appointments',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu),
+            label: 'More',
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildActionButton(String text, {
+    required Color backgroundColor,
+    required Color textColor,
+  }) {
+    return Container(
+      width: double.infinity,
+      height: 56,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(28),
+      ),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: textColor,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterChip(String label) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHospitalCard(String name, String description, String imagePath) {
+    return Container(
+      height: 80,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey[300]!),
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Row(
         children: [
-          Container(
-            width: isMobile ? 60 : 80,
-            height: isMobile ? 60 : 80,
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(isMobile ? 6 : 8),
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(12),
+              bottomLeft: Radius.circular(12),
             ),
-            child: Icon(
-              Icons.local_hospital,
-              size: isMobile ? 30 : 40,
-              color: Colors.grey[400],
+            child: Image.asset(
+              imagePath,
+              width: 80,
+              height: 80,
+              fit: BoxFit.cover,
             ),
           ),
-          SizedBox(width: isMobile ? 8 : 12),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   name,
-                  style: TextStyle(
-                    fontSize: isMobile ? 16 : 18,
+                  style: const TextStyle(
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
-                  info,
+                  description,
                   style: TextStyle(
+                    fontSize: 14,
                     color: Colors.grey[600],
-                    fontSize: isMobile ? 12 : 14,
                   ),
                 ),
               ],
             ),
           ),
-          Icon(
-            Icons.favorite_border,
-            size: isMobile ? 20 : 24,
+          IconButton(
+            icon: const Icon(Icons.favorite_border),
+            onPressed: () {},
           ),
         ],
       ),
