@@ -71,7 +71,32 @@ class HomePage extends StatelessWidget {
                         width: double.infinity,
                         color: const Color(0xFFE8F5E9),
                         child: Stack(
+                          fit: StackFit.expand,
                           children: [
+                            Positioned(
+                              right: 0,
+                              child: Image.asset(
+                                'assets/images/hospital_illustration.png',
+                                height: 200,
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    const Color(0xFFE8F5E9),
+                                    const Color(0xFFE8F5E9),
+                                    const Color(0xFFE8F5E9).withOpacity(0.9),
+                                    const Color(0xFFE8F5E9).withOpacity(0.6),
+                                    const Color(0xFFE8F5E9).withOpacity(0.2),
+                                  ],
+                                ),
+                              ),
+                            ),
                             const Positioned(
                               left: 20,
                               bottom: 40,
@@ -82,14 +107,6 @@ class HomePage extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black87,
                                 ),
-                              ),
-                            ),
-                            Positioned(
-                              right: 20,
-                              bottom: 20,
-                              child: Image.asset(
-                                'assets/images/hospital_illustration.png',
-                                height: 120,
                               ),
                             ),
                           ],
