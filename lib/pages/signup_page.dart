@@ -16,6 +16,8 @@ class _SignupPageState extends State<SignupPage> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _isLoading = false;
+  bool _privacyConsent = false;
+  bool _medicalConsent = false;
 
   @override
   void dispose() {
@@ -24,6 +26,24 @@ class _SignupPageState extends State<SignupPage> {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _showConsentDetails(String title, String content) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: SingleChildScrollView(
+          child: Text(content),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('확인'),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _signUp() async {
@@ -40,6 +60,13 @@ class _SignupPageState extends State<SignupPage> {
     if (_passwordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('비밀번호가 일치하지 않습니다')),
+      );
+      return;
+    }
+
+    if (!_privacyConsent || !_medicalConsent) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('모든 약관에 동의해주세요')),
       );
       return;
     }
@@ -132,6 +159,89 @@ class _SignupPageState extends State<SignupPage> {
                 ),
                 obscureText: true,
               ),
+              const SizedBox(height: 24),
+              
+              // 개인정보 수집 동의
+              Row(
+                children: [
+                  Checkbox(
+                    value: _privacyConsent,
+                    onChanged: (value) => setState(() => _privacyConsent = value!),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => _showConsentDetails(
+                        '개인정보 수집 및 이용 동의',
+                        '''
+1. 수집하는 개인정보 항목
+- 필수항목: 이름, 이메일 주소
+- 선택항목: 없음
+
+2. 개인정보의 수집 및 이용목적
+- 서비스 제공 및 회원관리
+- 고지사항 전달
+- 서비스 이용 통계 및 분석
+
+3. 개인정보의 보유 및 이용기간
+- 회원 탈퇴 시까지
+- 관계법령에 따른 보존기간
+
+4. 동의를 거부할 권리 및 동의 거부에 따른 불이익
+- 개인정보 수집 및 이용에 대한 동의를 거부할 수 있으나, 
+  이 경우 회원가입이 제한됩니다.
+''',
+                      ),
+                      child: const Text(
+                        '[필수] 개인정보 수집 및 이용 동의',
+                        style: TextStyle(decoration: TextDecoration.underline),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              
+              // 의료기록 수집 동의
+              Row(
+                children: [
+                  Checkbox(
+                    value: _medicalConsent,
+                    onChanged: (value) => setState(() => _medicalConsent = value!),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => _showConsentDetails(
+                        '의료기록 수집 및 열람 동의',
+                        '''
+1. 수집하는 의료정보 항목
+- 진료기록
+- 처방전 정보
+- 검사결과
+- 의료영상자료
+
+2. 의료정보의 수집 및 이용목적
+- 원활한 의료서비스 제공
+- 의료기관 간 진료정보 공유
+- 응급상황 대응
+- 의료서비스 품질 향상
+
+3. 의료정보의 보유 및 이용기간
+- 의료법에 따른 보존기간
+- 회원 탈퇴 후 5년
+
+4. 동의를 거부할 권리 및 동의 거부에 따른 불이익
+- 의료정보 수집 및 이용에 대한 동의를 거부할 수 있으나,
+  이 경우 일부 서비스 이용이 제한될 수 있습니다.
+''',
+                      ),
+                      child: const Text(
+                        '[필수] 의료기록 수집 및 열람 동의',
+                        style: TextStyle(decoration: TextDecoration.underline),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _isLoading ? null : _signUp,
