@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('홈'),
+        title: const Text('Home'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),

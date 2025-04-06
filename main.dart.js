@@ -75793,7 +75793,7 @@ A.a2d.prototype={
 $1(a){return B.x6},
 $S:181}
 A.pQ.prototype={
-N(a){var s=null,r=A.alL(A.b([A.Gj(s,s,B.CQ,s,s,new A.Yt(a),s,s,s)],t.D),s,s,B.QV),q=A.xQ(!0,new A.GD(new A.Yu(this),s),!0)
+N(a){var s=null,r=A.alL(A.b([A.Gj(s,s,B.CQ,s,s,new A.Yt(a),s,s,s)],t.D),s,s,B.QS),q=A.xQ(!0,new A.GD(new A.Yu(this),s),!0)
 return A.ajL(r,q,new A.uj(B.F3,B.yY,s,s))},
 um(a,b,c){var s=null,r=A.fu(28)
 return A.pr(A.mA(A.eP(a,s,s,s,A.hK(s,s,c,s,s,s,s,s,s,s,s,18,s,s,B.ma,s,s,!0,s,s,s,s,s,s,s,s),s,s),s,s),B.E,s,new A.dd(b,s,s,r,s,s,B.aR),56,s,s,1/0)},
@@ -75816,7 +75816,7 @@ $1(a){return B.rq},
 $S:470}
 A.Yu.prototype={
 $2(a,b){var s=null,r=t.D,q=this.a
-return A.a6C(new A.ei(new A.a5(0,1/0,b.d,1/0),new A.Gr(A.j2(A.b([new A.bO(B.fc,A.jM(A.b([A.Gj(s,s,B.iO,s,s,new A.Yr(),s,s,s),B.QK,B.Lf],r),B.a9,B.eg,B.aJ),s),A.pr(A.of(B.cd,A.b([A.a38(s,A.ank("assets/images/hospital_illustration.png",B.kL,200,A.bm(a,s,t.w).w.a.a*0.7),s,s,s,0,s,s),A.pr(s,B.E,s,new A.dd(s,s,s,s,s,new A.q3(B.eJ,B.hJ,B.c5,A.b([B.b4,B.b4,A.at(B.c.aA(229.5),B.b4.C()>>>16&255,B.b4.C()>>>8&255,B.b4.C()&255),A.at(153,B.b4.C()>>>16&255,B.b4.C()>>>8&255,B.b4.C()&255),A.at(51,B.b4.C()>>>16&255,B.b4.C()>>>8&255,B.b4.C()&255)],t.t_),s,s),B.aR),s,s,s,s),B.IY],r),B.L,B.LH),B.E,B.b4,s,200,s,s,1/0),new A.bO(B.fc,A.j2(A.b([q.um("Hospital Search",B.l,B.k),B.hg,q.um("Online Consultation",B.i1,B.l),B.hg,q.um("Pharmacy Finder",B.l,B.k),B.hg,q.um("Emergency Guide",B.i1,B.l)],r),B.a9,B.ak,B.aJ),s),A.a6C(A.jM(A.b([q.zI("All"),B.jQ,q.zI("Internal Medicine"),B.jQ,q.zI("Surgery")],r),B.a9,B.ak,B.aJ),B.lM,B.aP),new A.bO(B.fc,A.j2(A.b([q.I6("City Hospital","Open 24/7, 2 miles away","assets/images/hospital1.jpg"),B.hg,q.I6("Sunrise Clinic","Open until 8 PM, 1.5 miles away","assets/images/hospital2.jpg")],r),B.a9,B.ak,B.aJ),s),B.Li],r),B.a9,B.ak,B.aJ),s),s),s,B.aQ)},
+return A.a6C(new A.ei(new A.a5(0,1/0,b.d,1/0),new A.Gr(A.j2(A.b([new A.bO(B.fc,A.jM(A.b([A.Gj(s,s,B.iO,s,s,new A.Yr(),s,s,s),B.QJ,B.Lf],r),B.a9,B.eg,B.aJ),s),A.pr(A.of(B.cd,A.b([A.a38(s,A.ank("assets/images/hospital_illustration.png",B.kL,200,A.bm(a,s,t.w).w.a.a*0.7),s,s,s,0,s,s),A.pr(s,B.E,s,new A.dd(s,s,s,s,s,new A.q3(B.eJ,B.hJ,B.c5,A.b([B.b4,B.b4,A.at(B.c.aA(229.5),B.b4.C()>>>16&255,B.b4.C()>>>8&255,B.b4.C()&255),A.at(153,B.b4.C()>>>16&255,B.b4.C()>>>8&255,B.b4.C()&255),A.at(51,B.b4.C()>>>16&255,B.b4.C()>>>8&255,B.b4.C()&255)],t.t_),s,s),B.aR),s,s,s,s),B.IY],r),B.L,B.LH),B.E,B.b4,s,200,s,s,1/0),new A.bO(B.fc,A.j2(A.b([q.um("Hospital Search",B.l,B.k),B.hg,q.um("Online Consultation",B.i1,B.l),B.hg,q.um("Pharmacy Finder",B.l,B.k),B.hg,q.um("Emergency Guide",B.i1,B.l)],r),B.a9,B.ak,B.aJ),s),A.a6C(A.jM(A.b([q.zI("All"),B.jQ,q.zI("Internal Medicine"),B.jQ,q.zI("Surgery")],r),B.a9,B.ak,B.aJ),B.lM,B.aP),new A.bO(B.fc,A.j2(A.b([q.I6("City Hospital","Open 24/7, 2 miles away","assets/images/hospital1.jpg"),B.hg,q.I6("Sunrise Clinic","Open until 8 PM, 1.5 miles away","assets/images/hospital2.jpg")],r),B.a9,B.ak,B.aJ),s),B.Li],r),B.a9,B.ak,B.aJ),s),s),s,B.aQ)},
 $S:471}
 A.Yr.prototype={
 $0(){},
@@ -75848,13 +75848,13 @@ case 7:l=b
 if(l&&m.c!=null){j=m.c
 j.toString
 A.ao4(j,A.GU(new A.acQ(),null,t.z))}else{j=m.c
-if(j!=null)j.ab(t.Pu).f.kG(B.LB)}n.push(6)
+if(j!=null)j.ab(t.Pu).f.kG(B.LA)}n.push(6)
 s=5
 break
 case 4:p=3
 i=o.pop()
 j=m.c
-if(j!=null)j.ab(t.Pu).f.kG(B.Lx)
+if(j!=null)j.ab(t.Pu).f.kG(B.Lw)
 n.push(6)
 s=5
 break
@@ -75867,7 +75867,7 @@ case 6:case 1:return A.K(q,r)
 case 2:return A.J(o.at(-1),r)}})
 return A.L($async$vs,r)},
 N(a){var s=this,r=null,q=A.yV(s.d,B.Da,B.xQ,!1),p=A.yV(s.e,B.Db,r,!0),o=s.f,n=o?r:s.ga8M()
-return A.ajL(r,A.mA(A.a6C(A.j2(A.b([B.QR,B.Lg,q,B.ex,p,B.jR,A.fh(A.amY(o?B.l4:B.QU,n,r),r,1/0),B.ex,A.a7h(B.QJ,new A.acT(a),r)],t.D),B.a9,B.fL,B.aJ),B.fc,B.aQ),r,r),r)}}
+return A.ajL(r,A.mA(A.a6C(A.j2(A.b([B.QR,B.Lg,q,B.ex,p,B.jR,A.fh(A.amY(o?B.l4:B.QV,n,r),r,1/0),B.ex,A.a7h(B.QH,new A.acT(a),r)],t.D),B.a9,B.fL,B.aJ),B.fc,B.aQ),r,r),r)}}
 A.acP.prototype={
 $0(){return this.a.f=!0},
 $S:0}
@@ -75919,12 +75919,12 @@ return A.L($async$qt,r)},
 vt(){var s=0,r=A.M(t.H),q,p=2,o=[],n=[],m=this,l,k,j,i,h
 var $async$vt=A.N(function(a,b){if(a===1){o.push(b)
 s=p}while(true)switch(s){case 0:i=m.d
-if(i.a.a.length===0||m.e.a.a.length===0||m.f.a.a.length===0||m.r.a.a.length===0){m.c.ab(t.Pu).f.kG(B.Lz)
+if(i.a.a.length===0||m.e.a.a.length===0||m.f.a.a.length===0||m.r.a.a.length===0){m.c.ab(t.Pu).f.kG(B.Lx)
 s=1
 break}k=m.f
-if(k.a.a!==m.r.a.a){m.c.ab(t.Pu).f.kG(B.Lw)
+if(k.a.a!==m.r.a.a){m.c.ab(t.Pu).f.kG(B.Lv)
 s=1
-break}if(!m.x||!m.y){m.c.ab(t.Pu).f.kG(B.Lv)
+break}if(!m.x||!m.y){m.c.ab(t.Pu).f.kG(B.Lz)
 s=1
 break}m.ah(new A.af4(m))
 p=4
@@ -75934,13 +75934,13 @@ case 7:l=b
 if(l&&m.c!=null){i=m.c
 i.toString
 A.ao4(i,A.GU(new A.af5(),null,t.z))}else{i=m.c
-if(i!=null)i.ab(t.Pu).f.kG(B.Ly)}n.push(6)
+if(i!=null)i.ab(t.Pu).f.kG(B.LB)}n.push(6)
 s=5
 break
 case 4:p=3
 h=o.pop()
 i=m.c
-if(i!=null)i.ab(t.Pu).f.kG(B.LA)
+if(i!=null)i.ab(t.Pu).f.kG(B.Ly)
 n.push(6)
 s=5
 break
@@ -75952,11 +75952,11 @@ break
 case 6:case 1:return A.K(q,r)
 case 2:return A.J(o.at(-1),r)}})
 return A.L($async$vt,r)},
-N(a){var s=this,r=null,q=A.alL(r,B.x,0,B.QF),p=A.yV(s.d,A.Gp(r,new A.el(4,A.fu(12),B.cO),r,r,r,r,r,r,!0,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,"\uc774\ub984",!0,r,r,r,r,r,r,r,r,r,r,r,r,r),r,!1),o=A.yV(s.e,A.Gp(r,new A.el(4,A.fu(12),B.cO),r,r,r,r,r,r,!0,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,"\uc774\uba54\uc77c",!0,r,r,r,r,r,r,r,r,r,r,r,r,r),B.xQ,!1),n=A.yV(s.f,A.Gp(r,new A.el(4,A.fu(12),B.cO),r,r,r,r,r,r,!0,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,"\ube44\ubc00\ubc88\ud638",!0,r,r,r,r,r,r,r,r,r,r,r,r,r),r,!0),m=A.yV(s.r,A.Gp(r,new A.el(4,A.fu(12),B.cO),r,r,r,r,r,r,!0,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,"\ube44\ubc00\ubc88\ud638 \ud655\uc778",!0,r,r,r,r,r,r,r,r,r,r,r,r,r),r,!0),l=t.D,k=A.jM(A.b([A.am2(new A.af9(s),s.x),A.FO(A.jj(r,B.QP,B.ae,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,new A.afa(s),r,r,r,r,r,r),1)],l),B.a9,B.ak,B.aJ),j=A.jM(A.b([A.am2(new A.afb(s),s.y),A.FO(A.jj(r,B.QH,B.ae,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,new A.afc(s),r,r,r,r,r,r),1)],l),B.a9,B.ak,B.aJ),i=s.w?r:s.ga8N(),h=A.awF(r,r,B.l,r,r,r,r,r,r,r,r,r,B.C3,r,new A.cx(A.fu(12),B.q),r,r,r,r)
+N(a){var s=this,r=null,q=A.alL(r,B.x,0,B.QP),p=A.yV(s.d,A.Gp(r,new A.el(4,A.fu(12),B.cO),r,r,r,r,r,r,!0,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,"Name",!0,r,r,r,r,r,r,r,r,r,r,r,r,r),r,!1),o=A.yV(s.e,A.Gp(r,new A.el(4,A.fu(12),B.cO),r,r,r,r,r,r,!0,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,"Email",!0,r,r,r,r,r,r,r,r,r,r,r,r,r),B.xQ,!1),n=A.yV(s.f,A.Gp(r,new A.el(4,A.fu(12),B.cO),r,r,r,r,r,r,!0,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,"Password",!0,r,r,r,r,r,r,r,r,r,r,r,r,r),r,!0),m=A.yV(s.r,A.Gp(r,new A.el(4,A.fu(12),B.cO),r,r,r,r,r,r,!0,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,"Confirm Password",!0,r,r,r,r,r,r,r,r,r,r,r,r,r),r,!0),l=t.D,k=A.jM(A.b([A.am2(new A.af9(s),s.x),A.FO(A.jj(r,B.QF,B.ae,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,new A.afa(s),r,r,r,r,r,r),1)],l),B.a9,B.ak,B.aJ),j=A.jM(A.b([A.am2(new A.afb(s),s.y),A.FO(A.jj(r,B.QW,B.ae,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,new A.afc(s),r,r,r,r,r,r),1)],l),B.a9,B.ak,B.aJ),i=s.w?r:s.ga8N(),h=A.awF(r,r,B.l,r,r,r,r,r,r,r,r,r,B.C3,r,new A.cx(A.fu(12),B.q),r,r,r,r)
 return A.ajL(q,A.xQ(!0,new A.bO(B.Cc,A.j2(A.b([p,B.ex,o,B.ex,n,B.ex,m,B.jR,k,j,B.jR,A.amY(s.w?B.Aa:B.QN,i,h)],l),B.cT,B.ak,B.aJ),r),!0),r)}}
 A.af3.prototype={
 $1(a){var s=null
-return new A.oY(A.eP(this.a,s,s,s,s,s,s),A.a6C(A.eP(this.b,s,s,s,s,s,s),s,B.aQ),A.b([A.a7h(B.QG,new A.af2(a),s)],t.D),s)},
+return new A.oY(A.eP(this.a,s,s,s,s,s,s),A.a6C(A.eP(this.b,s,s,s,s,s,s),s,B.aQ),A.b([A.a7h(B.QX,new A.af2(a),s)],t.D),s)},
 $S:473}
 A.af2.prototype={
 $0(){return A.l9(this.a,!1).eu()},
@@ -75980,7 +75980,7 @@ s.toString
 return this.a.x=s},
 $S:0}
 A.afa.prototype={
-$0(){return this.a.qt("\uac1c\uc778\uc815\ubcf4 \uc218\uc9d1 \ubc0f \uc774\uc6a9 \ub3d9\uc758","1. \uc218\uc9d1\ud558\ub294 \uac1c\uc778\uc815\ubcf4 \ud56d\ubaa9\n- \ud544\uc218\ud56d\ubaa9: \uc774\ub984, \uc774\uba54\uc77c \uc8fc\uc18c\n- \uc120\ud0dd\ud56d\ubaa9: \uc5c6\uc74c\n\n2. \uac1c\uc778\uc815\ubcf4\uc758 \uc218\uc9d1 \ubc0f \uc774\uc6a9\ubaa9\uc801\n- \uc11c\ube44\uc2a4 \uc81c\uacf5 \ubc0f \ud68c\uc6d0\uad00\ub9ac\n- \uace0\uc9c0\uc0ac\ud56d \uc804\ub2ec\n- \uc11c\ube44\uc2a4 \uc774\uc6a9 \ud1b5\uacc4 \ubc0f \ubd84\uc11d\n\n3. \uac1c\uc778\uc815\ubcf4\uc758 \ubcf4\uc720 \ubc0f \uc774\uc6a9\uae30\uac04\n- \ud68c\uc6d0 \ud0c8\ud1f4 \uc2dc\uae4c\uc9c0\n- \uad00\uacc4\ubc95\ub839\uc5d0 \ub530\ub978 \ubcf4\uc874\uae30\uac04\n\n4. \ub3d9\uc758\ub97c \uac70\ubd80\ud560 \uad8c\ub9ac \ubc0f \ub3d9\uc758 \uac70\ubd80\uc5d0 \ub530\ub978 \ubd88\uc774\uc775\n- \uac1c\uc778\uc815\ubcf4 \uc218\uc9d1 \ubc0f \uc774\uc6a9\uc5d0 \ub300\ud55c \ub3d9\uc758\ub97c \uac70\ubd80\ud560 \uc218 \uc788\uc73c\ub098, \n  \uc774 \uacbd\uc6b0 \ud68c\uc6d0\uac00\uc785\uc774 \uc81c\ud55c\ub429\ub2c8\ub2e4.\n")},
+$0(){return this.a.qt("Privacy Policy Consent","1. Personal Information We Collect\n- Required: Name, Email address\n- Optional: None\n\n2. Purpose of Collection and Use\n- Service provision and member management\n- Notification delivery\n- Service usage statistics and analysis\n\n3. Retention and Usage Period\n- Until membership withdrawal\n- As required by relevant laws and regulations\n\n4. Right to Refuse and Consequences\n- You may refuse to consent to the collection and use of personal information,\n  but in this case, you will not be able to register for membership.\n")},
 $S:0}
 A.afb.prototype={
 $1(a){var s=this.a
@@ -75992,7 +75992,7 @@ s.toString
 return this.a.y=s},
 $S:0}
 A.afc.prototype={
-$0(){return this.a.qt("\uc758\ub8cc\uae30\ub85d \uc218\uc9d1 \ubc0f \uc5f4\ub78c \ub3d9\uc758","1. \uc218\uc9d1\ud558\ub294 \uc758\ub8cc\uc815\ubcf4 \ud56d\ubaa9\n- \uc9c4\ub8cc\uae30\ub85d\n- \ucc98\ubc29\uc804 \uc815\ubcf4\n- \uac80\uc0ac\uacb0\uacfc\n- \uc758\ub8cc\uc601\uc0c1\uc790\ub8cc\n\n2. \uc758\ub8cc\uc815\ubcf4\uc758 \uc218\uc9d1 \ubc0f \uc774\uc6a9\ubaa9\uc801\n- \uc6d0\ud65c\ud55c \uc758\ub8cc\uc11c\ube44\uc2a4 \uc81c\uacf5\n- \uc758\ub8cc\uae30\uad00 \uac04 \uc9c4\ub8cc\uc815\ubcf4 \uacf5\uc720\n- \uc751\uae09\uc0c1\ud669 \ub300\uc751\n- \uc758\ub8cc\uc11c\ube44\uc2a4 \ud488\uc9c8 \ud5a5\uc0c1\n\n3. \uc758\ub8cc\uc815\ubcf4\uc758 \ubcf4\uc720 \ubc0f \uc774\uc6a9\uae30\uac04\n- \uc758\ub8cc\ubc95\uc5d0 \ub530\ub978 \ubcf4\uc874\uae30\uac04\n- \ud68c\uc6d0 \ud0c8\ud1f4 \ud6c4 5\ub144\n\n4. \ub3d9\uc758\ub97c \uac70\ubd80\ud560 \uad8c\ub9ac \ubc0f \ub3d9\uc758 \uac70\ubd80\uc5d0 \ub530\ub978 \ubd88\uc774\uc775\n- \uc758\ub8cc\uc815\ubcf4 \uc218\uc9d1 \ubc0f \uc774\uc6a9\uc5d0 \ub300\ud55c \ub3d9\uc758\ub97c \uac70\ubd80\ud560 \uc218 \uc788\uc73c\ub098,\n  \uc774 \uacbd\uc6b0 \uc77c\ubd80 \uc11c\ube44\uc2a4 \uc774\uc6a9\uc774 \uc81c\ud55c\ub420 \uc218 \uc788\uc2b5\ub2c8\ub2e4.\n")},
+$0(){return this.a.qt("Medical Records Consent","1. Medical Information We Collect\n- Medical records\n- Prescription information\n- Test results\n- Medical imaging data\n\n2. Purpose of Collection and Use\n- Smooth medical service provision\n- Sharing medical information between healthcare providers\n- Emergency response\n- Improving medical service quality\n\n3. Retention and Usage Period\n- As required by medical law\n- 5 years after membership withdrawal\n\n4. Right to Refuse and Consequences\n- You may refuse to consent to the collection and use of medical information,\n  but in this case, some services may be limited.\n")},
 $S:0}
 A.a2R.prototype={
 Yc(a){$.ai7().m(0,this,a)}}
@@ -80544,8 +80544,8 @@ B.IV=new A.qm(3,"scale")
 B.IW=new A.qm(4,"unknown")
 B.IX=new A.xa(null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.PE=new A.k(!0,B.H,null,null,null,null,32,B.bZ,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.QL=new A.cG("Find the nearest\nhospital now!",null,B.PE,null,null,null,null,null,null)
-B.IY=new A.lh(20,null,null,40,null,null,B.QL,null)
+B.QK=new A.cG("Find the nearest\nhospital now!",null,B.PE,null,null,null,null,null,null)
+B.IY=new A.lh(20,null,null,40,null,null,B.QK,null)
 B.IZ=new A.qq(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.J_=new A.xd(null,null,null,null,null,null)
 B.wr=new A.av(1,1)
@@ -80825,20 +80825,20 @@ B.Lt=new A.qV(null,null,null,null,null,null,null,null,null,null,null,null,null,n
 B.QT=new A.cG("\uc774\uba54\uc77c\uacfc \ube44\ubc00\ubc88\ud638\ub97c \uc785\ub825\ud574\uc8fc\uc138\uc694",null,null,null,null,null,null,null,null)
 B.bY=new A.aG(4e6)
 B.Lu=new A.eM(B.QT,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
-B.QQ=new A.cG("\ubaa8\ub4e0 \uc57d\uad00\uc5d0 \ub3d9\uc758\ud574\uc8fc\uc138\uc694",null,null,null,null,null,null,null,null)
-B.Lv=new A.eM(B.QQ,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
-B.QO=new A.cG("\ube44\ubc00\ubc88\ud638\uac00 \uc77c\uce58\ud558\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4",null,null,null,null,null,null,null,null)
-B.Lw=new A.eM(B.QO,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
-B.QM=new A.cG("\ub85c\uadf8\uc778 \uc911 \uc624\ub958\uac00 \ubc1c\uc0dd\ud588\uc2b5\ub2c8\ub2e4",null,null,null,null,null,null,null,null)
-B.Lx=new A.eM(B.QM,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
-B.QX=new A.cG("\uc774\ubbf8 \uac00\uc785\ub41c \uc774\uba54\uc77c\uc785\ub2c8\ub2e4",null,null,null,null,null,null,null,null)
-B.Ly=new A.eM(B.QX,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
-B.QW=new A.cG("\ubaa8\ub4e0 \ud544\ub4dc\ub97c \uc785\ub825\ud574\uc8fc\uc138\uc694",null,null,null,null,null,null,null,null)
-B.Lz=new A.eM(B.QW,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
-B.QS=new A.cG("\ud68c\uc6d0\uac00\uc785 \uc911 \uc624\ub958\uac00 \ubc1c\uc0dd\ud588\uc2b5\ub2c8\ub2e4",null,null,null,null,null,null,null,null)
-B.LA=new A.eM(B.QS,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
-B.QI=new A.cG("\ub85c\uadf8\uc778\uc5d0 \uc2e4\ud328\ud588\uc2b5\ub2c8\ub2e4",null,null,null,null,null,null,null,null)
-B.LB=new A.eM(B.QI,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
+B.QM=new A.cG("Passwords do not match",null,null,null,null,null,null,null,null)
+B.Lv=new A.eM(B.QM,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
+B.QL=new A.cG("\ub85c\uadf8\uc778 \uc911 \uc624\ub958\uac00 \ubc1c\uc0dd\ud588\uc2b5\ub2c8\ub2e4",null,null,null,null,null,null,null,null)
+B.Lw=new A.eM(B.QL,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
+B.QI=new A.cG("Please fill in all fields",null,null,null,null,null,null,null,null)
+B.Lx=new A.eM(B.QI,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
+B.QU=new A.cG("An error occurred during sign up",null,null,null,null,null,null,null,null)
+B.Ly=new A.eM(B.QU,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
+B.QO=new A.cG("Please agree to all terms",null,null,null,null,null,null,null,null)
+B.Lz=new A.eM(B.QO,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
+B.QG=new A.cG("\ub85c\uadf8\uc778\uc5d0 \uc2e4\ud328\ud588\uc2b5\ub2c8\ub2e4",null,null,null,null,null,null,null,null)
+B.LA=new A.eM(B.QG,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
+B.QQ=new A.cG("Email already exists",null,null,null,null,null,null,null,null)
+B.LB=new A.eM(B.QQ,null,null,null,null,null,null,null,null,null,null,null,null,B.bY,null,null,null,B.L,null)
 B.xz=new A.ys(0,"permissive")
 B.LC=new A.ys(1,"normal")
 B.LD=new A.ys(2,"forced")
@@ -81192,18 +81192,18 @@ B.Pu=new A.k(!0,B.H,null,".AppleSystemUIFont",null,null,null,null,null,null,null
 B.PN=new A.k(!0,B.l,null,".AppleSystemUIFont",null,null,null,null,null,null,null,null,null,null,null,null,null,B.e,null,null,null,"blackRedwoodCity labelMedium",null,null,null,null)
 B.MN=new A.k(!0,B.l,null,".AppleSystemUIFont",null,null,null,null,null,null,null,null,null,null,null,null,null,B.e,null,null,null,"blackRedwoodCity labelSmall",null,null,null,null)
 B.QE=new A.cY(B.Os,B.Nw,B.Ot,B.P2,B.N8,B.Ng,B.NQ,B.OQ,B.O3,B.Py,B.MD,B.MY,B.Pu,B.PN,B.MN)
-B.QF=new A.cG("\ud68c\uc6d0\uac00\uc785",null,null,null,null,null,null,null,null)
-B.QG=new A.cG("\ud655\uc778",null,null,null,null,null,null,null,null)
-B.QH=new A.cG("[\ud544\uc218] \uc758\ub8cc\uae30\ub85d \uc218\uc9d1 \ubc0f \uc5f4\ub78c \ub3d9\uc758",null,B.hk,null,null,null,null,null,null)
-B.QJ=new A.cG("\uacc4\uc815\uc774 \uc5c6\uc73c\uc2e0\uac00\uc694? \ud68c\uc6d0\uac00\uc785",null,null,null,null,null,null,null,null)
+B.QF=new A.cG("[Required] Privacy Policy Consent",null,B.hk,null,null,null,null,null,null)
+B.QH=new A.cG("\uacc4\uc815\uc774 \uc5c6\uc73c\uc2e0\uac00\uc694? \ud68c\uc6d0\uac00\uc785",null,null,null,null,null,null,null,null)
 B.xT=new A.k(!0,null,null,null,null,null,24,B.bZ,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.QK=new A.cG("Nearby Hospitals",null,B.xT,null,null,null,null,null,null)
+B.QJ=new A.cG("Nearby Hospitals",null,B.xT,null,null,null,null,null,null)
 B.OH=new A.k(!0,B.k,null,null,null,null,18,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.QN=new A.cG("\ud68c\uc6d0\uac00\uc785",null,B.OH,null,null,null,null,null,null)
-B.QP=new A.cG("[\ud544\uc218] \uac1c\uc778\uc815\ubcf4 \uc218\uc9d1 \ubc0f \uc774\uc6a9 \ub3d9\uc758",null,B.hk,null,null,null,null,null,null)
+B.QN=new A.cG("Sign Up",null,B.OH,null,null,null,null,null,null)
+B.QP=new A.cG("Sign Up",null,null,null,null,null,null,null,null)
 B.QR=new A.cG("\ub85c\uadf8\uc778",null,B.xT,null,null,null,null,null,null)
-B.QU=new A.cG("\ub85c\uadf8\uc778",null,null,null,null,null,null,null,null)
-B.QV=new A.cG("\ud648",null,null,null,null,null,null,null,null)
+B.QS=new A.cG("Home",null,null,null,null,null,null,null,null)
+B.QV=new A.cG("\ub85c\uadf8\uc778",null,null,null,null,null,null,null,null)
+B.QW=new A.cG("[Required] Medical Records Consent",null,B.hk,null,null,null,null,null,null)
+B.QX=new A.cG("OK",null,null,null,null,null,null,null,null)
 B.U7=new A.a7X(0,"system")
 B.HJ=new A.i(0.056,0.024)
 B.HY=new A.i(0.108,0.3085)

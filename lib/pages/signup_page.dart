@@ -39,7 +39,7 @@ class _SignupPageState extends State<SignupPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('확인'),
+            child: const Text('OK'),
           ),
         ],
       ),
@@ -52,21 +52,21 @@ class _SignupPageState extends State<SignupPage> {
         _passwordController.text.isEmpty ||
         _confirmPasswordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('모든 필드를 입력해주세요')),
+        const SnackBar(content: Text('Please fill in all fields')),
       );
       return;
     }
 
     if (_passwordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('비밀번호가 일치하지 않습니다')),
+        const SnackBar(content: Text('Passwords do not match')),
       );
       return;
     }
 
     if (!_privacyConsent || !_medicalConsent) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('모든 약관에 동의해주세요')),
+        const SnackBar(content: Text('Please agree to all terms')),
       );
       return;
     }
@@ -87,13 +87,13 @@ class _SignupPageState extends State<SignupPage> {
         );
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('이미 가입된 이메일입니다')),
+          const SnackBar(content: Text('Email already exists')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('회원가입 중 오류가 발생했습니다')),
+          const SnackBar(content: Text('An error occurred during sign up')),
         );
       }
     } finally {
@@ -107,7 +107,7 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('회원가입'),
+        title: const Text('Sign Up'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -120,7 +120,7 @@ class _SignupPageState extends State<SignupPage> {
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: '이름',
+                  labelText: 'Name',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -130,7 +130,7 @@ class _SignupPageState extends State<SignupPage> {
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
-                  labelText: '이메일',
+                  labelText: 'Email',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -141,7 +141,7 @@ class _SignupPageState extends State<SignupPage> {
               TextField(
                 controller: _passwordController,
                 decoration: InputDecoration(
-                  labelText: '비밀번호',
+                  labelText: 'Password',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -152,7 +152,7 @@ class _SignupPageState extends State<SignupPage> {
               TextField(
                 controller: _confirmPasswordController,
                 decoration: InputDecoration(
-                  labelText: '비밀번호 확인',
+                  labelText: 'Confirm Password',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -161,7 +161,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
               const SizedBox(height: 24),
               
-              // 개인정보 수집 동의
+              // Privacy Policy Consent
               Row(
                 children: [
                   Checkbox(
@@ -171,28 +171,28 @@ class _SignupPageState extends State<SignupPage> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () => _showConsentDetails(
-                        '개인정보 수집 및 이용 동의',
+                        'Privacy Policy Consent',
                         '''
-1. 수집하는 개인정보 항목
-- 필수항목: 이름, 이메일 주소
-- 선택항목: 없음
+1. Personal Information We Collect
+- Required: Name, Email address
+- Optional: None
 
-2. 개인정보의 수집 및 이용목적
-- 서비스 제공 및 회원관리
-- 고지사항 전달
-- 서비스 이용 통계 및 분석
+2. Purpose of Collection and Use
+- Service provision and member management
+- Notification delivery
+- Service usage statistics and analysis
 
-3. 개인정보의 보유 및 이용기간
-- 회원 탈퇴 시까지
-- 관계법령에 따른 보존기간
+3. Retention and Usage Period
+- Until membership withdrawal
+- As required by relevant laws and regulations
 
-4. 동의를 거부할 권리 및 동의 거부에 따른 불이익
-- 개인정보 수집 및 이용에 대한 동의를 거부할 수 있으나, 
-  이 경우 회원가입이 제한됩니다.
+4. Right to Refuse and Consequences
+- You may refuse to consent to the collection and use of personal information,
+  but in this case, you will not be able to register for membership.
 ''',
                       ),
                       child: const Text(
-                        '[필수] 개인정보 수집 및 이용 동의',
+                        '[Required] Privacy Policy Consent',
                         style: TextStyle(decoration: TextDecoration.underline),
                       ),
                     ),
@@ -200,7 +200,7 @@ class _SignupPageState extends State<SignupPage> {
                 ],
               ),
               
-              // 의료기록 수집 동의
+              // Medical Records Consent
               Row(
                 children: [
                   Checkbox(
@@ -210,31 +210,31 @@ class _SignupPageState extends State<SignupPage> {
                   Expanded(
                     child: GestureDetector(
                       onTap: () => _showConsentDetails(
-                        '의료기록 수집 및 열람 동의',
+                        'Medical Records Consent',
                         '''
-1. 수집하는 의료정보 항목
-- 진료기록
-- 처방전 정보
-- 검사결과
-- 의료영상자료
+1. Medical Information We Collect
+- Medical records
+- Prescription information
+- Test results
+- Medical imaging data
 
-2. 의료정보의 수집 및 이용목적
-- 원활한 의료서비스 제공
-- 의료기관 간 진료정보 공유
-- 응급상황 대응
-- 의료서비스 품질 향상
+2. Purpose of Collection and Use
+- Smooth medical service provision
+- Sharing medical information between healthcare providers
+- Emergency response
+- Improving medical service quality
 
-3. 의료정보의 보유 및 이용기간
-- 의료법에 따른 보존기간
-- 회원 탈퇴 후 5년
+3. Retention and Usage Period
+- As required by medical law
+- 5 years after membership withdrawal
 
-4. 동의를 거부할 권리 및 동의 거부에 따른 불이익
-- 의료정보 수집 및 이용에 대한 동의를 거부할 수 있으나,
-  이 경우 일부 서비스 이용이 제한될 수 있습니다.
+4. Right to Refuse and Consequences
+- You may refuse to consent to the collection and use of medical information,
+  but in this case, some services may be limited.
 ''',
                       ),
                       child: const Text(
-                        '[필수] 의료기록 수집 및 열람 동의',
+                        '[Required] Medical Records Consent',
                         style: TextStyle(decoration: TextDecoration.underline),
                       ),
                     ),
@@ -255,7 +255,7 @@ class _SignupPageState extends State<SignupPage> {
                 child: _isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
                     : const Text(
-                        '회원가입',
+                        'Sign Up',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
