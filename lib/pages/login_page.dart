@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _signIn() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('이메일과 비밀번호를 입력해주세요')),
+        const SnackBar(content: Text('Please enter email and password')),
       );
       return;
     }
@@ -45,13 +45,13 @@ class _LoginPageState extends State<LoginPage> {
         );
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('로그인에 실패했습니다')),
+          const SnackBar(content: Text('Invalid email or password')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('로그인 중 오류가 발생했습니다')),
+          const SnackBar(content: Text('An error occurred during sign in')),
         );
       }
     } finally {
@@ -71,17 +71,25 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                '로그인',
+                'Welcome',
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 32,
                   fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Please sign in to continue',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
                 ),
               ),
               const SizedBox(height: 32),
               TextField(
                 controller: _emailController,
                 decoration: const InputDecoration(
-                  labelText: '이메일',
+                  labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
@@ -90,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
               TextField(
                 controller: _passwordController,
                 decoration: const InputDecoration(
-                  labelText: '비밀번호',
+                  labelText: 'Password',
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
@@ -100,9 +108,22 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _signIn,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                   child: _isLoading
-                      ? const CircularProgressIndicator()
-                      : const Text('로그인'),
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          'Sign In',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -113,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                     MaterialPageRoute(builder: (_) => const SignupPage()),
                   );
                 },
-                child: const Text('계정이 없으신가요? 회원가입'),
+                child: const Text('Don\'t have an account? Sign Up'),
               ),
             ],
           ),
