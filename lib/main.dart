@@ -93,6 +93,17 @@ class HomePage extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
+                            IconButton(
+                              icon: const Icon(Icons.logout),
+                              onPressed: () async {
+                                await AuthService.signOut();
+                                if (context.mounted) {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(builder: (_) => const LoginPage()),
+                                  );
+                                }
+                              },
+                            ),
                           ],
                         ),
                       ),
