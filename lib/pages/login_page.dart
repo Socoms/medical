@@ -1,87 +1,119 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:medical/pages/signup_page.dart';
+import 'package:medical/services/auth_service.dart';
+import 'package:medical/main.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _signIn() async {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('이메일과 비밀번호를 입력해주세요')),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      final success = await AuthService.signIn(
+        _emailController.text,
+        _passwordController.text,
+      );
+
+      if (success && mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomePage()),
+        );
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('로그인에 실패했습니다')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('로그인 중 오류가 발생했습니다')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 40),
-              Text(
-                '환영합니다',
-                style: GoogleFonts.notoSans(
-                  fontSize: 32,
+              const Text(
+                '로그인',
+                style: TextStyle(
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
-                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
-              Text(
-                '병원 찾기 서비스를 이용하려면 로그인해주세요',
-                style: GoogleFonts.notoSans(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 32),
               TextField(
-                decoration: InputDecoration(
+                controller: _emailController,
+                decoration: const InputDecoration(
                   labelText: '이메일',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  border: OutlineInputBorder(),
                 ),
+                keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16),
               TextField(
-                obscureText: true,
-                decoration: InputDecoration(
+                controller: _passwordController,
+                decoration: const InputDecoration(
                   labelText: '비밀번호',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  border: OutlineInputBorder(),
                 ),
+                obscureText: true,
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () {
-                  // TODO: 로그인 로직 구현
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text(
-                  '로그인',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _signIn,
+                  child: _isLoading
+                      ? const CircularProgressIndicator()
+                      : const Text('로그인'),
                 ),
               ),
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/signup');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SignupPage()),
+                  );
                 },
-                child: const Text(
-                  '계정이 없으신가요? 회원가입',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
+                child: const Text('계정이 없으신가요? 회원가입'),
               ),
             ],
           ),

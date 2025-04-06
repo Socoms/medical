@@ -3,8 +3,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'pages/login_page.dart';
 import 'pages/signup_page.dart';
+import 'services/auth_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -14,15 +16,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Nearby Hospitals',
+      title: 'Medical App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        textTheme: GoogleFonts.notoSansTextTheme(),
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/',
+      home: FutureBuilder<bool>(
+        future: AuthService.getCurrentUser(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          
+          if (snapshot.data == true) {
+            return const HomePage();
+          }
+          
+          return const LoginPage();
+        },
+      ),
       routes: {
-        '/': (context) => const HomePage(),
-        '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignupPage(),
       },
       debugShowCheckedModeBanner: false,
@@ -36,6 +49,22 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('홈'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await AuthService.signOut();
+              if (context.mounted) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => const LoginPage()),
+                );
+              }
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -63,12 +92,6 @@ class HomePage extends StatelessWidget {
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                               ),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.person),
-                              onPressed: () {
-                                Navigator.pushNamed(context, '/login');
-                              },
                             ),
                           ],
                         ),
