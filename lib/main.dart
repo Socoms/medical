@@ -8,17 +8,23 @@ import 'services/auth_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyCWYmx1wgOx_2u4FOqjqF-6xSNjMPuG0gI",
-      authDomain: "medical-895d5.firebaseapp.com",
-      projectId: "medical-895d5",
-      storageBucket: "medical-895d5.firebasestorage.app",
-      messagingSenderId: "324537336133",
-      appId: "1:324537336133:web:907496c163b88ca631be2c",
-      measurementId: "G-QS6B8SC97Q",
-    ),
-  );
+  
+  if (const bool.fromEnvironment('dart.library.js_util')) {
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: "AIzaSyCWYmx1wgOx_2u4FOqjqF-6xSNjMPuG0gI",
+        authDomain: "medical-895d5.firebaseapp.com",
+        projectId: "medical-895d5",
+        storageBucket: "medical-895d5.appspot.com",
+        messagingSenderId: "324537336133",
+        appId: "1:324537336133:web:907496c163b88ca631be2c",
+        measurementId: "G-QS6B8SC97Q",
+      ),
+    );
+  } else {
+    await Firebase.initializeApp();
+  }
+  
   runApp(const MyApp());
 }
 
