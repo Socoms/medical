@@ -5,11 +5,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'pages/login_page.dart';
 import 'pages/signup_page.dart';
 import 'services/auth_service.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  if (const bool.fromEnvironment('dart.library.js_util')) {
+  if (kIsWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
         apiKey: "AIzaSyCWYmx1wgOx_2u4FOqjqF-6xSNjMPuG0gI",
