@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'pages/login_page.dart';
 import 'pages/signup_page.dart';
 import 'services/auth_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: const FirebaseOptions(
+      apiKey: "AIzaSyCWYmx1wgOx_2u4FOqjqF-6xSNjMPuG0gI",
+      authDomain: "medical-895d5.firebaseapp.com",
+      projectId: "medical-895d5",
+      storageBucket: "medical-895d5.firebasestorage.app",
+      messagingSenderId: "324537336133",
+      appId: "1:324537336133:web:907496c163b88ca631be2c",
+      measurementId: "G-QS6B8SC97Q",
+    ),
+  );
   runApp(const MyApp());
 }
 
