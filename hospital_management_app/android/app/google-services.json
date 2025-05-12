@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "50549227228",
+    "project_id": "medical-korea-af8ef",
+    "storage_bucket": "medical-korea-af8ef.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:50549227228:android:807212a1db8052339cbe19",
+        "android_client_info": {
+          "package_name": "com.company.medical"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3udrBSu8kfL0x8QiX0my2VR_0DTVkCU4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:50549227228:android:fc11e3b3e7a7d7f79cbe19",
+        "android_client_info": {
+          "package_name": "com.example.hospital_management_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3udrBSu8kfL0x8QiX0my2VR_0DTVkCU4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
