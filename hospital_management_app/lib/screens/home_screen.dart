@@ -47,42 +47,126 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _getCurrentLocation() async {
     try {
-      final status = await Permission.location.request();
-      if (status.isGranted) {
-        _currentPosition = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high,
-        );
-        setState(() {
-          _isLoading = false;
-        });
-      } else {
+      // 위치 서비스가 활성화되어 있는지 확인
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
         setState(() {
           _isLoading = false;
           _currentPosition = null;
         });
+        // 위치 서비스 활성화 안내 다이얼로그 표시
+        if (mounted) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('위치 서비스 비활성화'),
+              content: const Text('위치 서비스를 활성화해주세요.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('확인'),
+                ),
+              ],
+            ),
+          );
+        }
+        return;
       }
+
+      // 위치 권한 확인
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          setState(() {
+            _isLoading = false;
+            _currentPosition = null;
+          });
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        setState(() {
+          _isLoading = false;
+          _currentPosition = null;
+        });
+        // 설정으로 이동하는 다이얼로그 표시
+        if (mounted) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('위치 권한 필요'),
+              content: const Text('앱 설정에서 위치 권한을 허용해주세요.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('취소'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    await Geolocator.openAppSettings();
+                  },
+                  child: const Text('설정으로 이동'),
+                ),
+              ],
+            ),
+          );
+        }
+        return;
+      }
+
+      // 위치 정보 가져오기 (타임아웃 증가)
+      _currentPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.medium, // 정확도 낮춤
+        timeLimit: const Duration(seconds: 15), // 타임아웃 증가
+      ).timeout(
+        const Duration(seconds: 15),
+        onTimeout: () async {
+          // 타임아웃 시 마지막 알려진 위치 시도
+          final lastPosition = await Geolocator.getLastKnownPosition();
+          if (lastPosition != null) {
+            return lastPosition;
+          }
+          throw Exception('위치 정보를 가져올 수 없습니다.');
+        },
+      );
+      
+      setState(() {
+        _isLoading = false;
+      });
     } catch (e) {
       print('Error getting location: $e');
       setState(() {
         _isLoading = false;
         _currentPosition = null;
       });
+      // 에러 메시지 표시
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('위치 정보를 가져오는데 실패했습니다: ${e.toString()}'),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
           'Medical Korea',
           style: TextStyle(
-            color: Colors.black,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
           ),
         ),
         centerTitle: true,
@@ -101,8 +185,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: const Text(
                     'Login',
                     style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
+                      color: Colors.black87,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 );
@@ -135,175 +220,226 @@ class _HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('HomeContent build - isLoading: $isLoading, currentPosition: $currentPosition');
+    
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Quick Diagnosis',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      physics: const BouncingScrollPhysics(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              color: Colors.blue.withOpacity(0.1),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildFeatureButton(
-                      icon: Icons.link,
-                      label: 'Chain',
-                      color: Colors.black,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const PainAreaScreen(),
-                          ),
-                        );
-                      },
+                    const Text(
+                      'Quick Diagnosis',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                      ),
                     ),
-                    _buildFeatureButton(
-                      icon: Icons.mic,
-                      label: 'Voice',
-                      color: Colors.black,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AIMedicalScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                    _buildFeatureButton(
-                      icon: Icons.text_fields,
-                      label: 'Text',
-                      color: Colors.black,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const TextMedicalScreen(),
-                          ),
-                        );
-                      },
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _buildFeatureButton(
+                          icon: Icons.link,
+                          label: 'Chain',
+                          color: Colors.blueAccent.withOpacity(0.8),
+                          backgroundColor: Colors.white.withOpacity(0.8),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PainAreaScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        _buildFeatureButton(
+                          icon: Icons.mic,
+                          label: 'Voice',
+                          color: Colors.blueAccent.withOpacity(0.8),
+                          backgroundColor: Colors.white.withOpacity(0.8),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const AIMedicalScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        _buildFeatureButton(
+                          icon: Icons.text_fields,
+                          label: 'Text',
+                          color: Colors.blueAccent.withOpacity(0.8),
+                          backgroundColor: Colors.white.withOpacity(0.8),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const TextMedicalScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
-          ),
-          const SizedBox(height: 24),
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Nearby Hospitals',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MapScreen(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                        color: Colors.black12,
-                        width: 1,
+            const SizedBox(height: 20),
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              color: Colors.green.withOpacity(0.1),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '주변 병원 찾기',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
                       ),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: isLoading
-                          ? const Center(child: CircularProgressIndicator())
-                          : currentPosition == null
-                              ? const Center(
-                                  child: Text(
-                                    '위치 정보를 가져올 수 없습니다.',
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16,
+                    const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: () {
+                        print('지도 화면으로 이동 시도');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MapScreen(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 180,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: isLoading
+                              ? Container(
+                                  color: Colors.white.withOpacity(0.8),
+                                  child: const Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.greenAccent),
                                     ),
                                   ),
                                 )
-                              : Stack(
-                                  children: [
-                                    GoogleMap(
-                                      initialCameraPosition: CameraPosition(
-                                        target: LatLng(
-                                          currentPosition!.latitude,
-                                          currentPosition!.longitude,
-                                        ),
-                                        zoom: 14,
-                                      ),
-                                      myLocationEnabled: true,
-                                      myLocationButtonEnabled: false,
-                                      zoomControlsEnabled: false,
-                                    ),
-                                    Positioned.fill(
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => const MapScreen(),
+                              : currentPosition == null
+                                  ? Container(
+                                      color: Colors.white.withOpacity(0.8),
+                                      child: const Center(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.location_off,
+                                              size: 40,
+                                              color: Colors.grey,
+                                            ),
+                                            SizedBox(height: 8),
+                                            Text(
+                                              '위치 정보를 가져올 수 없습니다.\n위치 권한을 확인해주세요.',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 14,
                                               ),
-                                            );
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : Stack(
+                                      children: [
+                                        GoogleMap(
+                                          initialCameraPosition: CameraPosition(
+                                            target: LatLng(
+                                              currentPosition!.latitude,
+                                              currentPosition!.longitude,
+                                            ),
+                                            zoom: 14,
+                                          ),
+                                          myLocationEnabled: true,
+                                          myLocationButtonEnabled: false,
+                                          zoomControlsEnabled: false,
+                                          onMapCreated: (GoogleMapController controller) {
+                                            print('지도 생성 완료');
+                                            try {
+                                              controller.setMapStyle('''
+                                                [
+                                                  {
+                                                    "featureType": "all",
+                                                    "elementType": "all",
+                                                    "stylers": [
+                                                      {
+                                                        "visibility": "on"
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              ''');
+                                            } catch (e) {
+                                              print('지도 스타일 설정 오류: $e');
+                                            }
                                           },
                                         ),
-                                      ),
+                                        Positioned.fill(
+                                          child: Material(
+                                            color: Colors.transparent,
+                                            child: InkWell(
+                                              onTap: () {
+                                                print('지도 화면으로 이동 시도 (InkWell)');
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) => const MapScreen(),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -312,6 +448,7 @@ class _HomeContent extends StatelessWidget {
     required IconData icon,
     required String label,
     required Color color,
+    required Color backgroundColor,
     required VoidCallback onTap,
   }) {
     return GestureDetector(
@@ -319,16 +456,23 @@ class _HomeContent extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 60,
-            height: 60,
+            width: 64,
+            height: 64,
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.05),
+              color: backgroundColor,
               shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: color.withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: Icon(
               icon,
               color: color,
-              size: 30,
+              size: 28,
             ),
           ),
           const SizedBox(height: 8),
@@ -336,7 +480,8 @@ class _HomeContent extends StatelessWidget {
             label,
             style: TextStyle(
               color: color,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w500,
+              fontSize: 13,
             ),
           ),
         ],

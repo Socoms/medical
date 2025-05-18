@@ -84,6 +84,10 @@ class MoreScreen extends StatelessWidget {
             _buildMenuItem(context, Icons.help, 'Help'),
             _buildMenuItem(context, Icons.settings, 'Settings'),
           ]),
+          const SizedBox(height: 20),
+          _buildSection('Account', [
+            _buildMenuItem(context, Icons.logout, 'Logout'),
+          ]),
         ],
       ),
     );
@@ -126,8 +130,13 @@ class MoreScreen extends StatelessWidget {
 
   Widget _buildMenuItem(BuildContext context, IconData icon, String title) {
     return ListTile(
-      leading: Icon(icon, color: Colors.black),
-      title: Text(title),
+      leading: Icon(icon, color: title == 'Logout' ? Colors.red : Colors.black),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: title == 'Logout' ? Colors.red : Colors.black,
+        ),
+      ),
       trailing: const Icon(Icons.chevron_right, color: Colors.grey),
       onTap: () {
         if (title == 'Language') {
@@ -187,27 +196,14 @@ class MoreScreen extends StatelessWidget {
             ),
           );
         } else if (title == 'Settings') {
-          showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return Container(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      leading: const Icon(Icons.logout),
-                      title: const Text('Logout'),
-                      onTap: () {
-                        Navigator.pop(context);
-                        _showLogoutDialog(context);
-                      },
-                    ),
-                  ],
-                ),
-              );
-            },
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SettingsScreen(),
+            ),
           );
+        } else if (title == 'Logout') {
+          _showLogoutDialog(context);
         }
       },
     );

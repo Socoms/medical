@@ -26,26 +26,36 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeLocation();
+    print('MapScreen initState');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeLocation();
+    });
   }
 
   Future<void> _initializeLocation() async {
+    print('위치 초기화 시작');
     try {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      print('위치 서비스 상태: $serviceEnabled');
+      
       if (!serviceEnabled) {
         setState(() {
-          _error = 'Location services are disabled.';
+          _error = '위치 서비스가 비활성화되어 있습니다.\n설정에서 위치 서비스를 활성화해주세요.';
           _isLoading = false;
         });
         return;
       }
 
       LocationPermission permission = await Geolocator.checkPermission();
+      print('현재 위치 권한 상태: $permission');
+      
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
+        print('위치 권한 요청 결과: $permission');
+        
         if (permission == LocationPermission.denied) {
           setState(() {
-            _error = 'Location permission denied.';
+            _error = '위치 권한이 거부되었습니다.\n앱 설정에서 위치 권한을 허용해주세요.';
             _isLoading = false;
           });
           return;
@@ -54,7 +64,7 @@ class _MapScreenState extends State<MapScreen> {
 
       if (permission == LocationPermission.deniedForever) {
         setState(() {
-          _error = 'Location permission permanently denied. Please enable it in settings.';
+          _error = '위치 권한이 영구적으로 거부되었습니다.\n앱 설정에서 위치 권한을 허용해주세요.';
           _isLoading = false;
         });
         return;
@@ -62,8 +72,9 @@ class _MapScreenState extends State<MapScreen> {
 
       await _getCurrentLocation();
     } catch (e) {
+      print('위치 초기화 오류: $e');
       setState(() {
-        _error = 'Error getting location: $e';
+        _error = '위치 정보를 가져오는데 실패했습니다.\n다시 시도해주세요.';
         _isLoading = false;
       });
     }
@@ -72,8 +83,22 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> _getCurrentLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-        timeLimit: const Duration(seconds: 5),
+        desiredAccuracy: LocationAccuracy.medium,
+        timeLimit: const Duration(seconds: 15),
+      ).timeout(
+        const Duration(seconds: 15),
+        onTimeout: () async {
+          // 타임아웃 시 마지막 알려진 위치 시도
+          try {
+            final lastPosition = await Geolocator.getLastKnownPosition();
+            if (lastPosition != null) {
+              return lastPosition;
+            }
+            throw Exception('위치 정보를 가져올 수 없습니다.');
+          } catch (e) {
+            throw Exception('위치 정보를 가져올 수 없습니다.');
+          }
+        },
       );
 
       setState(() {
@@ -81,9 +106,12 @@ class _MapScreenState extends State<MapScreen> {
         _error = null;
       });
 
-      await _searchNearbyHospitals();
+      // 병원 검색은 위치 정보를 성공적으로 가져온 후에 실행
+      if (mounted) {
+        await _searchNearbyHospitals();
+      }
 
-      if (_mapController != null) {
+      if (_mapController != null && mounted) {
         _mapController!.animateCamera(
           CameraUpdate.newCameraPosition(
             CameraPosition(
@@ -94,10 +122,19 @@ class _MapScreenState extends State<MapScreen> {
         );
       }
     } catch (e) {
-      setState(() {
-        _error = 'Error getting location: $e';
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _error = '위치 정보를 가져오는데 실패했습니다.\n다시 시도해주세요.';
+          _isLoading = false;
+        });
+        // 에러 메시지 표시
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('위치 정보 오류: ${e.toString()}'),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
     }
   }
 
@@ -105,20 +142,43 @@ class _MapScreenState extends State<MapScreen> {
     if (_currentPosition == null) return;
 
     try {
+      print('병원 검색 시작 - 위치: ${_currentPosition!.latitude}, ${_currentPosition!.longitude}');
+      
       final url = Uri.parse(
         'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
         'location=${_currentPosition!.latitude},${_currentPosition!.longitude}'
         '&radius=5000'
         '&type=hospital'
-        '&language=en'
+        '&language=ko'
         '&key=$_apiKey'
       );
 
-      final response = await http.get(url);
+      print('API 요청 URL: $url');
+
+      final response = await http.get(url).timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw TimeoutException('병원 정보를 가져오는데 시간이 너무 오래 걸립니다.');
+        },
+      );
+
+      print('API 응답 상태 코드: ${response.statusCode}');
+      print('API 응답 내용: ${response.body}');
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['status'] == 'OK') {
           final List<dynamic> results = data['results'];
+          print('검색된 병원 수: ${results.length}');
+
+          if (results.isEmpty) {
+            setState(() {
+              _error = '주변에 병원이 없습니다.';
+              _isLoading = false;
+            });
+            return;
+          }
+
           final hospitals = results.map((place) {
             final location = place['geometry']['location'];
             final lat = location['lat'] as double;
@@ -136,63 +196,89 @@ class _MapScreenState extends State<MapScreen> {
                 : '${distanceInMeters.toStringAsFixed(0)}m';
 
             return {
-              'name': place['name'],
-              'address': place['vicinity'],
+              'name': place['name'] ?? '이름 없음',
+              'address': place['vicinity'] ?? '주소 없음',
               'distance': distance,
               'rating': place['rating']?.toString() ?? 'N/A',
               'lat': lat,
               'lng': lng,
-              'place_id': place['place_id'],
+              'place_id': place['place_id'] ?? '',
             };
           }).toList();
 
-          setState(() {
-            _hospitals = hospitals;
-            _hospitals.sort((a, b) {
-              final aDistance = double.parse(a['distance'].replaceAll(RegExp(r'[^0-9.]'), ''));
-              final bDistance = double.parse(b['distance'].replaceAll(RegExp(r'[^0-9.]'), ''));
-              return aDistance.compareTo(bDistance);
+          if (mounted) {
+            setState(() {
+              _hospitals = hospitals;
+              _hospitals.sort((a, b) {
+                final aDistance = double.parse(a['distance'].replaceAll(RegExp(r'[^0-9.]'), ''));
+                final bDistance = double.parse(b['distance'].replaceAll(RegExp(r'[^0-9.]'), ''));
+                return aDistance.compareTo(bDistance);
+              });
+
+              _markers = _hospitals.map((hospital) {
+                return Marker(
+                  markerId: MarkerId(hospital['name']),
+                  position: LatLng(hospital['lat'], hospital['lng']),
+                  infoWindow: InfoWindow(
+                    title: hospital['name'],
+                    snippet: '${hospital['distance']} • ${hospital['rating']}★',
+                  ),
+                  onTap: () {
+                    _onHospitalSelected(hospital);
+                  },
+                );
+              }).toSet();
+
+              if (_currentPosition != null) {
+                _markers.add(
+                  Marker(
+                    markerId: const MarkerId('current_location'),
+                    position: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+                    icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+                    infoWindow: const InfoWindow(title: '현재 위치'),
+                  ),
+                );
+              }
+
+              _error = null;
+              _isLoading = false;
             });
-
-            _markers = _hospitals.map((hospital) {
-              return Marker(
-                markerId: MarkerId(hospital['name']),
-                position: LatLng(hospital['lat'], hospital['lng']),
-                infoWindow: InfoWindow(
-                  title: hospital['name'],
-                  snippet: '${hospital['distance']} • ${hospital['rating']}★',
-                ),
-                onTap: () {
-                  _onHospitalSelected(hospital);
-                },
-              );
-            }).toSet();
-
-            if (_currentPosition != null) {
-              _markers.add(
-                Marker(
-                  markerId: const MarkerId('current_location'),
-                  position: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
-                  icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-                  infoWindow: const InfoWindow(title: 'Current Location'),
-                ),
-              );
-            }
-
-            _error = null;
+          }
+        } else if (data['status'] == 'ZERO_RESULTS') {
+          setState(() {
+            _error = '주변에 병원이 없습니다.';
+            _isLoading = false;
+          });
+        } else if (data['status'] == 'OVER_QUERY_LIMIT') {
+          setState(() {
+            _error = 'API 호출 한도를 초과했습니다. 잠시 후 다시 시도해주세요.';
+            _isLoading = false;
+          });
+        } else if (data['status'] == 'REQUEST_DENIED') {
+          setState(() {
+            _error = 'API 키가 유효하지 않습니다.';
             _isLoading = false;
           });
         } else {
-          throw Exception('Places API error: ${data['status']}');
+          throw Exception('Places API 오류: ${data['status']} - ${data['error_message'] ?? '알 수 없는 오류'}');
         }
       } else {
-        throw Exception('HTTP error: ${response.statusCode}');
+        throw Exception('HTTP 오류: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
-      setState(() {
-        _error = 'Error fetching hospital information: $e';
-        _isLoading = false;
-      });
+      print('병원 검색 오류: $e');
+      if (mounted) {
+        setState(() {
+          _error = '병원 정보를 가져오는데 실패했습니다.\n다시 시도해주세요.';
+          _isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('병원 정보 오류: ${e.toString()}'),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
     }
   }
 
@@ -381,19 +467,21 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('MapScreen build - isLoading: $_isLoading, error: $_error, currentPosition: $_currentPosition');
+    
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Find Nearby Hospitals'),
+        title: const Text('주변 병원 찾기'),
         backgroundColor: Colors.white,
         elevation: 0,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
+              print('새로고침 버튼 클릭');
               setState(() {
                 _isLoading = true;
                 _error = null;
-                _showHospitalDetails = false;
               });
               _initializeLocation();
             },
@@ -402,35 +490,34 @@ class _MapScreenState extends State<MapScreen> {
       ),
       body: _error != null
           ? Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                      size: 48,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      _error!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _isLoading = true;
-                          _error = null;
-                        });
-                        _initializeLocation();
-                      },
-                      child: const Text('Try Again'),
-                    ),
-                  ],
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.error_outline,
+                    size: 48,
+                    color: Colors.red,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    _error!,
+                    style: const TextStyle(color: Colors.red),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      print('다시 시도 버튼 클릭');
+                      setState(() {
+                        _error = null;
+                        _isLoading = true;
+                      });
+                      _initializeLocation();
+                    },
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('다시 시도'),
+                  ),
+                ],
               ),
             )
           : Column(
@@ -439,22 +526,64 @@ class _MapScreenState extends State<MapScreen> {
                   flex: 4,
                   child: _isLoading
                       ? const Center(child: CircularProgressIndicator())
-                      : GoogleMap(
-                          initialCameraPosition: CameraPosition(
-                            target: LatLng(
-                              _currentPosition?.latitude ?? 37.5665,
-                              _currentPosition?.longitude ?? 126.9780,
+                      : _currentPosition == null
+                          ? const Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.location_off,
+                                    size: 48,
+                                    color: Colors.grey,
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    '위치 정보를 가져올 수 없습니다.\n위치 권한을 확인해주세요.',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : GoogleMap(
+                              initialCameraPosition: CameraPosition(
+                                target: LatLng(
+                                  _currentPosition!.latitude,
+                                  _currentPosition!.longitude,
+                                ),
+                                zoom: 14,
+                              ),
+                              myLocationEnabled: true,
+                              myLocationButtonEnabled: true,
+                              zoomControlsEnabled: true,
+                              markers: _markers,
+                              onMapCreated: (controller) {
+                                print('지도 생성 완료');
+                                setState(() {
+                                  _mapController = controller;
+                                });
+                                try {
+                                  controller.setMapStyle('''
+                                    [
+                                      {
+                                        "featureType": "all",
+                                        "elementType": "all",
+                                        "stylers": [
+                                          {
+                                            "visibility": "on"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  ''');
+                                } catch (e) {
+                                  print('지도 스타일 설정 오류: $e');
+                                }
+                              },
                             ),
-                            zoom: 14,
-                          ),
-                          myLocationEnabled: true,
-                          myLocationButtonEnabled: true,
-                          zoomControlsEnabled: true,
-                          markers: _markers,
-                          onMapCreated: (controller) {
-                            _mapController = controller;
-                          },
-                        ),
                 ),
                 Expanded(
                   flex: 6,

@@ -5,11 +5,9 @@
 *.swp
 .DS_Store
 .atom/
-.build/
 .buildlog/
 .history
 .svn/
-.swiftpm/
 migrate_working_dir/
 
 # IntelliJ related
@@ -83,3 +81,19 @@ app.*.map.json
 assets/service_account.json
 lib/config/service_account.dart
 lib/screens/ai_medical_screen.dart
+
+# 민감한 정보 파일
+**/google-services.json
+**/GoogleService-Info.plist
+**/*service_account*
+**/lib/config/service_account.dart
+**/lib/config/firebase_options.dart
+**/android/key.properties
+**/*.keystore
+**/*.jks
+**/*.p8
+**/*.p12
+**/*.key
+**/*.mobileprovision
+**/.env
+**/env.g.dart

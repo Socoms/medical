@@ -10,6 +10,7 @@ class PainAreaScreen extends StatefulWidget {
 class _PainAreaScreenState extends State<PainAreaScreen> {
   String? selectedBodyPart;
   String? selectedDetailPart;
+  bool showDetails = true;
   
   final Map<String, List<String>> bodyPartDetails = {
     'Head': [
@@ -113,10 +114,11 @@ class _PainAreaScreenState extends State<PainAreaScreen> {
         children: [
           Expanded(
             child: GridView.count(
-              crossAxisCount: 2,
-              padding: const EdgeInsets.all(20),
-              mainAxisSpacing: 15,
-              crossAxisSpacing: 15,
+              crossAxisCount: 3,
+              childAspectRatio: 1.0,
+              padding: const EdgeInsets.all(12),
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
               children: [
                 _buildBodyPartButton('Head', Icons.psychology_outlined),
                 _buildBodyPartButton('Chest', Icons.favorite_border),
@@ -147,33 +149,35 @@ class _PainAreaScreenState extends State<PainAreaScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                if (selectedBodyPart != null) ...[
+                if (selectedBodyPart != null && showDetails) ...[
                   const SizedBox(height: 15),
-                  SizedBox(
-                    height: 40,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: bodyPartDetails[selectedBodyPart]!.length,
-                      separatorBuilder: (context, index) => const SizedBox(width: 10),
-                      itemBuilder: (context, index) {
-                        final detail = bodyPartDetails[selectedBodyPart]![index];
-                        final isSelected = selectedDetailPart == detail;
-                        return ChoiceChip(
-                          label: Text(detail),
-                          selected: isSelected,
-                          onSelected: (selected) {
-                            setState(() {
-                              selectedDetailPart = selected ? detail : null;
-                            });
-                          },
-                          backgroundColor: Colors.white,
-                          selectedColor: Colors.purple.shade100,
-                          labelStyle: TextStyle(
-                            color: isSelected ? Colors.purple : Colors.black,
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                          ),
-                        );
-                      },
+                  Container(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.2,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: bodyPartDetails[selectedBodyPart]!.map((detail) {
+                          final isSelected = selectedDetailPart == detail;
+                          return ChoiceChip(
+                            label: Text(detail, style: TextStyle(fontSize: 12)),
+                            selected: isSelected,
+                            onSelected: (selected) {
+                              setState(() {
+                                selectedDetailPart = selected ? detail : null;
+                              });
+                            },
+                            backgroundColor: Colors.white,
+                            selectedColor: Colors.purple.shade100,
+                            labelStyle: TextStyle(
+                              color: isSelected ? Colors.purple : Colors.black,
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            ),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
                 ],
@@ -251,22 +255,31 @@ class _PainAreaScreenState extends State<PainAreaScreen> {
         child: InkWell(
           onTap: () {
             setState(() {
-              selectedBodyPart = label;
-              selectedDetailPart = null;
+              if (selectedBodyPart == label) {
+                showDetails = !showDetails;
+                if (!showDetails) {
+                  selectedBodyPart = null;
+                  selectedDetailPart = null;
+                }
+              } else {
+                selectedBodyPart = label;
+                selectedDetailPart = null;
+                showDetails = true;
+              }
             });
           },
           borderRadius: BorderRadius.circular(15),
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(8),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
                   icon,
-                  size: 32,
+                  size: 18,
                   color: isSelected ? Colors.purple : Colors.black,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
                 Text(
                   label,
                   style: TextStyle(

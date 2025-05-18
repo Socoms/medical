@@ -79,19 +79,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ]),
             const SizedBox(height: 20),
             _buildSettingSection('Account', [
-              _buildAccountSetting('Logout', Icons.logout, () async {
-                // 로그아웃 로직
-                await FirebaseAuth.instance.signOut();
-                if (context.mounted) {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainScreenWithHome(),
-                    ),
-                    (route) => false,
-                  );
-                }
-              }),
               _buildAccountSetting('Delete Account', Icons.delete, () {
                 // 계정 삭제 로직
               }),
